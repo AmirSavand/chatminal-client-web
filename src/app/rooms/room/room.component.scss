@@ -1,0 +1,51 @@
+@import "src/variables";
+
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  > .header {
+    border-bottom: $border-width solid $border-color;
+    background: rgba($dark, 0.75);
+  }
+
+  > .chats {
+    height: 100%;
+    overflow-y: scroll;
+
+    > .chat {
+      margin: map_get($spacers, 3);
+
+      > .user {
+        font-weight: $font-weight-bold;
+        color: $secondary;
+      }
+
+      > .message {
+
+      }
+    }
+  }
+
+  > .chatbox {
+    margin-top: auto;
+
+    > input {
+      width: 100%;
+      border: none;
+      border-top: $border-width solid $border-color;
+      border-radius: 0;
+      padding: map_get($spacers, 3);
+      color: $light;
+      outline: 0;
+      background: none;
+      transition: all ease-in-out 200ms;
+      background: rgba($dark, 0.75);
+
+      &:focus {
+        background: rgba($dark-lighten, 0.75);
+      }
+    }
+  }
+}

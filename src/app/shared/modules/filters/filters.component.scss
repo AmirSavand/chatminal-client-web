@@ -1,0 +1,17 @@
+@import "src/variables";
+
+.filters {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  > .filter {
+    margin-right: map_get($spacers, 2);
+    max-width: 150px;
+    width: 100%;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

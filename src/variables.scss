@@ -1,0 +1,69 @@
+$primary: #f4427d;
+$dark: #1e272e;
+$secondary: #808e9b;
+$light: #c7c7c7;
+$danger: #ff5e57;
+$success: #05c46b;
+$info: #0fbcf9;
+
+$dark-lighten: lighten($dark, 5);
+$dark-darken: darken($dark, 5);
+
+$light-lighten: lighten($light, 5);
+$light-darken: darken($light, 15);
+
+$body-color: $light;
+$body-bg: $dark;
+
+$border-color: $dark-lighten;
+$border-width: 0;
+
+$font-family-base: "Fira Sans", sans-serif;
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 500;
+
+$font-size-base: 1rem;
+$font-size-sm: $font-size-base * 0.75;
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+);
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+);
+
+$enable-rounded: false;
+
+$list-group-bg: none;
+$list-group-color: $secondary;
+$list-group-border-width: 0;
+$list-group-hover-bg: $border-color;
+$list-group-action-hover-color: $list-group-color;
+$list-group-action-active-bg: $dark-darken;
+$list-group-active-border-color: $border-color;
+$list-group-active-bg: $dark-darken;
+$list-group-active-color: white;
+$list-group-item-padding-y: 1rem;
+
+$card-bg: $dark-lighten;
+$card-color: $light;
+
+$link-decoration: none;
+$link-hover-decoration: none;
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/utilities";
+
+/* Global */
+
+

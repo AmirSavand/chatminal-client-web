@@ -1,0 +1,26 @@
+@import "src/variables";
+
+.badge {
+  display: inline-block;
+
+  > div {
+    display: inline-block;
+    color: white;
+    padding: 0 map_get($spacers, 2);
+    font-size: $font-size-sm;
+
+    &.bg-light {
+      color: black;
+    }
+
+    &:first-of-type {
+      border-top-left-radius: $border-radius;
+      border-bottom-left-radius: $border-radius;
+    }
+
+    &:last-of-type {
+      border-top-right-radius: $border-radius;
+      border-bottom-right-radius: $border-radius;
+    }
+  }
+}

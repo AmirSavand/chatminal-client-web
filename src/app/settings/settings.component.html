@@ -1,0 +1,13 @@
+<form class="card" [formGroup]="form.form" (ngSubmit)="submit()">
+  <div class="card-header">Settings</div>
+  <div class="card-body">
+    <div class="form-floating">
+      <input type="text" class="form-control" id="username" formControlName="username">
+      <label for="username">Username</label>
+    </div>
+  </div>
+  <div class="card-footer">
+    <a class="btn btn-link ms-auto me-3" routerLink="/">Cancel</a>
+    <button class="btn btn-dark">Save</button>
+  </div>
+</form>

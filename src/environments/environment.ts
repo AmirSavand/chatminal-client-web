@@ -1,0 +1,9 @@
+import { Environment } from '@app/shared/interfaces/environment';
+
+export const environment: Environment = {
+  development: true,
+  name: 'local',
+  api: 'http://localhost:4000/',
+  pusherKey: '52a1b54e390a2fff28b2',
+  pusherCluster: 'eu',
+};

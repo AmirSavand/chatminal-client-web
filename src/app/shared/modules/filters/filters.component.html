@@ -1,0 +1,36 @@
+<div class="filters">
+  <div class="filter" *ngFor="let filter of filters">
+
+    <!-- Text type -->
+    <input *ngIf="filter.type === filterType.TEXT"
+           [placeholder]="filter.label"
+           [(ngModel)]="filter.value"
+           (debouncedChange)="onUpdate()"
+           appModelDebounce
+           type="text"
+           class="form-control box form-control-sm">
+
+    <!-- List type  -->
+    <app-select *ngIf="filter.type === filterType.LIST && (!filter.values || filter.values.length)"
+                rawItemIdKey="id"
+                rawItemLabelKey="name"
+                [rawItems]="filter.values"
+                [selectLabel]="filter.label"
+                [title]="filter.label"
+                [allowClear]="true"
+                classes="form-select-sm box"
+                (clear)="filter.value = null; onUpdate()"
+                (choose)="filter.value = $event.id; onUpdate()">
+    </app-select>
+
+    <!-- Boolean type -->
+    <div *ngIf="filter.type === filterType.BOOLEAN" class="form-check">
+      <input [(ngModel)]="filter.value"
+             [id]="'filter-' + filter.key"
+             (ngModelChange)="onUpdate()"
+             class="form-check-input"
+             type="checkbox">
+      <label class="form-check-label" [for]="'filter-' + filter.key">{{ filter.label }}</label>
+    </div>
+  </div>
+</div>
