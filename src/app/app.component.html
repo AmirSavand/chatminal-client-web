@@ -5,6 +5,30 @@
 <canvas #background></canvas>
 
 <!-- Page -->
-<div class="page">
-  <router-outlet></router-outlet>
+<div class="wrapper">
+  <div class="sidebar">
+    <div class="fw-bold border-bottom p-3">Rooms</div>
+    <div class="list-group list-group-flush">
+      <a [routerLink]="[room.id]"
+         routerLinkActive="active"
+         *ngFor="let room of rooms"
+         class="list-group-item list-group-item-action">
+        Room <span class="font-monospace">{{ room.id }}</span>
+      </a>
+      <a class="list-group-item list-group-item-action" (click)="createRoom()">New Room</a>
+    </div>
+    <br>
+    <div class="list-group list-group-flush">
+      <a class="list-group-item list-group-item-action"
+         routerLink="/"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }">
+        Home
+      </a>
+      <a routerLink="/settings" class="list-group-item list-group-item-action" routerLinkActive="active">Settings</a>
+    </div>
+  </div>
+  <div class="page">
+    <router-outlet></router-outlet>
+  </div>
 </div>

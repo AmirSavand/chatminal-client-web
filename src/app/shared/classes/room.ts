@@ -55,6 +55,10 @@ export class Room {
     Room.DICT[data.id] = this;
   }
 
+  get channel(): string {
+    return `presence-room-${this.id}`;
+  }
+
   export(): Partial<Room> {
     return {
       id: this.id,

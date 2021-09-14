@@ -1,7 +1,9 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Pusher } from '@app/shared/classes/pusher';
 import { Room } from '@app/shared/classes/room';
 import { User } from '@app/shared/classes/user';
+import { VERSION } from '@app/shared/consts/version';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +14,18 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   @ViewChild('background') background: ElementRef<HTMLCanvasElement>;
 
-  ngOnInit():void {
-    User.load();
-    Room.load();
-    Pusher.connect();
+  rooms: Room[];
+
+  user = User;
+
+  isInPage: boolean;
+
+  version = VERSION;
+
+  constructor(private router: Router) {
   }
 
-  ngAfterViewInit(): void {
+  private setupBackground(): void {
     const c: HTMLCanvasElement = this.background.nativeElement;
     const ctx: CanvasRenderingContext2D = c.getContext('2d');
     c.height = window.innerHeight;
@@ -44,5 +51,32 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
     }
     setInterval(draw, 35);
+  }
+
+  ngOnInit(): void {
+    User.load();
+    Room.load();
+    Pusher.connect();
+    this.rooms = Room.list;
+    if (!User.username) {
+      this.router.navigateByUrl('/settings');
+      return;
+    }
+    Room.EVENT.subscribe((): void => {
+      this.rooms = Room.list;
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.setupBackground();
+  }
+
+  createRoom(): void {
+    const id: string = prompt('Enter room ID if you want to join:', Room.generateId());
+    if (id) {
+      const room = new Room({ id });
+      Room.save();
+      this.router.navigate(['/', room.id]);
+    }
   }
 }

@@ -1,13 +1,27 @@
-<form class="card" [formGroup]="form.form" (ngSubmit)="submit()">
-  <div class="card-header">Settings</div>
-  <div class="card-body">
-    <div class="form-floating">
-      <input type="text" class="form-control" id="username" formControlName="username">
-      <label for="username">Username</label>
-    </div>
+<form class="wrapper terminal" [formGroup]="form.form" (ngSubmit)="submit()">
+  <div>
+    <span class="sign">&#62;</span>
+    <span class="text-white">Chatminal Settings</span>
   </div>
-  <div class="card-footer">
-    <a class="btn btn-link ms-auto me-3" routerLink="/">Cancel</a>
-    <button class="btn btn-dark">Save</button>
+  <div>
+    <span class="sign">&#62;</span>
+    <span>Display name: </span>
+    <input type="text" id="username" formControlName="username" placeholder="Username">
+  </div>
+  <div>
+    <span class="sign">&#62;</span>
+    <button (click)="submit()">Save Changes</button>
+  </div>
+  <div *ngIf="form.error.detail || form.success">
+    <span class="sign sign-log">&#62;</span>
+    <span class="text-muted">Saving settings changes...</span>
+  </div>
+  <div *ngIf="form.success">
+    <span class="sign sign-log">&#62;</span>
+    <span class="text-success">Settings saved successfully.</span>
+  </div>
+  <div *ngIf="form.error.detail">
+    <span class="sign sign-log">&#62;</span>
+    <span class="text-danger">ERROR {{ form.error.detail }}</span>
   </div>
 </form>

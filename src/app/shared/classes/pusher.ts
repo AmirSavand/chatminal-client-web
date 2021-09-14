@@ -1,6 +1,24 @@
+import { User } from '@app/shared/classes/user';
+import { ApiService } from '@app/shared/services/api.service';
 import { environment } from '@environments/environment';
 
-import { default as PusherJS, Channel } from 'pusher-js';
+import { default as PusherJS, Channel, PresenceChannel } from 'pusher-js';
+import { Subscription } from 'rxjs';
+
+/** Pusher defined events. */
+export enum PusherEvent {
+  SUCCESS = 'pusher:subscription_succeeded',
+  ERROR = 'pusher:subscription_error',
+  MEMBER_ADDED = 'pusher:member_added',
+  MEMBER_REMOVED = 'pusher:member_removed',
+}
+
+/** Pusher error data on error event data. */
+export interface PusherError {
+  type: string;
+  message: string;
+  status: number;
+}
 
 /**
  * Handles pusher connecting, pusher disconnecting, chancel
@@ -11,16 +29,29 @@ export class Pusher {
   /** Pusher client instance. */
   private static pusher: PusherJS;
 
-  /** Connect to pusher. */
+  private static userSubscription: Subscription;
+
+  /**
+   * Connect to pusher and set username to user
+   * data using the {@see User}.
+   */
   static connect(): void {
+    /** Subscribe to pusher. */
     Pusher.pusher = new PusherJS(environment.pusherKey, {
+      authEndpoint: `${ApiService.BASE}pusher/auth/`,
+      auth: { params: { user: User.username } },
       cluster: environment.pusherCluster,
       forceTLS: true,
+    });
+    /** Subscribe to username changes. */
+    Pusher.userSubscription = User.EVENT.subscribe((): void => {
+      Pusher.pusher.config.auth.params.user = User.username;
     });
   }
 
   /** Disconnect from pusher. */
   static disconnect(): void {
+    Pusher.userSubscription.unsubscribe();
     Pusher.pusher.disconnect();
   }
 
@@ -30,7 +61,7 @@ export class Pusher {
    * @param name Channel name
    * @returns Channel that got subscribed to
    */
-  static subscribe(name: string): Channel {
+  static subscribe(name: string): Channel | PresenceChannel {
     return Pusher.pusher.subscribe(name);
   }
 
@@ -39,7 +70,7 @@ export class Pusher {
    *
    * @param channel Channel to unsubscribe from
    */
-  static unsubscribe(channel: Channel): void {
+  static unsubscribe(channel: Channel | PresenceChannel): void {
     Pusher.pusher.unsubscribe(channel.name);
   }
 }

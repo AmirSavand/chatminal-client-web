@@ -4,7 +4,7 @@
 
 /* Google font */
 
-@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
 
 /* Bootstrap */
 
@@ -16,22 +16,22 @@
 @import "~bootstrap/scss/grid";
 //@import "~bootstrap/scss/tables";
 //@import "~bootstrap/scss/forms";
-@import "~bootstrap/scss/forms/labels";
+//@import "~bootstrap/scss/forms/labels";
 //@import "~bootstrap/scss/forms/form-text";
-@import "~bootstrap/scss/forms/form-control";
+//@import "~bootstrap/scss/forms/form-control";
 //@import "~bootstrap/scss/forms/form-select";
 //@import "~bootstrap/scss/forms/form-check";
 //@import "~bootstrap/scss/forms/form-range";
-@import "~bootstrap/scss/forms/floating-labels";
+//@import "~bootstrap/scss/forms/floating-labels";
 //@import "~bootstrap/scss/forms/input-group";
 //@import "~bootstrap/scss/forms/validation";
-@import "~bootstrap/scss/buttons";
-@import "~bootstrap/scss/transitions";
+//@import "~bootstrap/scss/buttons";
+//@import "~bootstrap/scss/transitions";
 //@import "~bootstrap/scss/dropdown";
 //@import "~bootstrap/scss/button-group";
 //@import "~bootstrap/scss/nav";
 //@import "~bootstrap/scss/navbar";
-@import "~bootstrap/scss/card";
+//@import "~bootstrap/scss/card";
 //@import "~bootstrap/scss/accordion";
 //@import "~bootstrap/scss/breadcrumb";
 //@import "~bootstrap/scss/pagination";
@@ -47,7 +47,7 @@
 //@import "~bootstrap/scss/carousel";
 //@import "~bootstrap/scss/spinners";
 //@import "~bootstrap/scss/offcanvas";
-@import "~bootstrap/scss/placeholders";
+//@import "~bootstrap/scss/placeholders";
 //@import "~bootstrap/scss/helpers";
 //@import "~bootstrap/scss/helpers/clearfix";
 //@import "~bootstrap/scss/helpers/colored-links";
@@ -98,6 +98,8 @@ app-root {
   flex-direction: column;
 }
 
+a,
+button,
 .list-group-item-action {
   cursor: pointer;
 }
@@ -107,5 +109,40 @@ app-root {
   > .card-footer {
     display: flex;
     align-items: center;
+  }
+}
+
+.terminal {
+  font-family: $font-family-monospace;
+  line-height: $line-height-lg;
+  white-space: pre-wrap;
+  color: $secondary;
+
+  .sign {
+    color: $info;
+    padding-right: map_get($spacers, 3);
+
+    &.sign-log {
+      opacity: 0;
+    }
+  }
+
+  input {
+    background: none;
+    border: none;
+    padding: 0;
+    outline: none;
+    border-bottom: 1px solid $secondary;
+  }
+
+  a, button {
+    color: $primary;
+    border: none;
+    padding: 0;
+    background: none;
+
+    &:active {
+      opacity: 0.5;
+    }
   }
 }

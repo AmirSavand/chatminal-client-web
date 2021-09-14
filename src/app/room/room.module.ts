@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { RoomRoutingModule } from './room-routing.module';
-import { RoomComponent } from './room.component';
+import { RoomRoutingModule } from 'src/app/room/room-routing.module';
+import { RoomComponent } from 'src/app/room/room.component';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { RoomComponent } from './room.component';
     CommonModule,
     RoomRoutingModule,
     FormsModule,
+    FontAwesomeModule,
   ],
 })
 export class RoomModule { }
