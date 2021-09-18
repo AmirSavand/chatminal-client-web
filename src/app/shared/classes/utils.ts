@@ -31,4 +31,17 @@ export class Utils {
   static getRandomItem<T>(list: T[]): T {
     return list[Math.floor(Math.random() * list.length)];
   }
+
+  static isValidHexColor(color: string): boolean {
+    return /^#[0-9A-F]{6}$/i.test(color);
+  }
+
+  static randomKey(length = 6): string {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+    for (let i = 0; i < length; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  }
 }

@@ -1,0 +1,11 @@
+<div class="terminal {{ classes }}">
+  <div *ngFor="let message of messages">
+    <span class="sign">&#62;</span>
+    <span [class.text-primary]="message.user === 'Chatminal'"
+          [class.text-info]="message.user === user.username">
+          <span>{{ message.user }}: </span>
+        </span>
+    <span class="text-light font-normal">{{ message.message }}</span>
+    <img [alt]="message.attachment" class="full mw-100" [src]="message.attachment" *ngIf="message.attachment">
+  </div>
+</div>

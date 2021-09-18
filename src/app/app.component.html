@@ -10,10 +10,13 @@
     <div class="fw-bold border-bottom p-3">Rooms</div>
     <div class="list-group list-group-flush">
       <a [routerLink]="[room.id]"
+         [title]="room.id"
          routerLinkActive="active"
          *ngFor="let room of rooms"
-         class="list-group-item list-group-item-action">
-        Room <span class="font-monospace">{{ room.id }}</span>
+         class="list-group-item list-group-item-action d-flex align-items-center">
+        <span *ngIf="!room.alias">Room <span class="font-monospace">{{ room.id }}</span></span>
+        <span *ngIf="room.alias">{{ room.alias }}</span>
+        <span class="ms-auto badge bg-primary" *ngIf="room.unread">{{ room.unread | number }}</span>
       </a>
       <a class="list-group-item list-group-item-action" (click)="createRoom()">New Room</a>
     </div>
@@ -29,6 +32,6 @@
     </div>
   </div>
   <div class="page">
-    <router-outlet></router-outlet>
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
   </div>
 </div>

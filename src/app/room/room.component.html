@@ -3,11 +3,11 @@
   <!-- Header -->
   <div class="header">
     <div class="fw-bold me-auto">Room <span class="font-monospace">{{ room.id }}</span></div>
-    <a class="text-secondary" *ngIf="members" (click)="showMembers()" title="Click to show members">
-      <span class="me-1">{{ members.count | number }}</span>
+    <a class="text-secondary" *ngIf="room.members" (click)="showMembers()" title="Click to show members">
+      <span class="me-1">{{ room.members.count | number }}</span>
       <fa-icon [fixedWidth]="true" [icon]="faUsers"></fa-icon>
     </a>
-    <a class="ms-3 text-secondary" *ngIf="view === 'chats'" (click)="view = 'settings'">
+    <a class="ms-3 text-secondary" *ngIf="view === 'messages'" (click)="view = 'settings'">
       <fa-icon [fixedWidth]="true" [icon]="faSettings"></fa-icon>
     </a>
   </div>
@@ -15,17 +15,11 @@
   <!-- View -->
   <div class="view" #viewElement>
 
-    <!-- View: Chats -->
-    <ng-container *ngIf="view === 'chats'">
-      <div class="chat" *ngFor="let chat of messages">
-        <div class="user"
-             [class.text-primary]="chat.user === 'Chatminal'"
-             [class.text-info]="chat.user === user.username">
-          {{ chat.user }}
-        </div>
-        <div class="message">{{ chat.message }}</div>
-      </div>
-    </ng-container>
+    <!-- View: Messages -->
+    <app-message-list classes="mx-5 mt-5 mb-2"
+                      [messages]="room.messages"
+                      *ngIf="view === 'messages'">
+    </app-message-list>
 
     <!-- View: Settings -->
     <div class="terminal m-5" *ngIf="view === 'settings'">
@@ -39,28 +33,47 @@
       </div>
       <div>
         <span class="sign">&#62;</span>
-        <span *ngIf="members">Your connection is <span class="text-success">OK</span></span>
-        <span *ngIf="!members">Your connection is <span class="text-danger">NOT OK</span></span>
+        <span *ngIf="room.members">Your connection is <span class="text-success">OK</span></span>
+        <span *ngIf="!room.members">Your connection is <span class="text-danger">NOT OK</span></span>
       </div>
-      <div *ngIf="members">
+      <div *ngIf="room.members">
         <span class="sign">&#62;</span>
-        <span>{{ members.count | number }} number of online members</span>
-      </div>
-      <div>
-        <span class="sign">&#62;</span>
-        <button (click)="remove()">Leave Room</button>
+        <span>{{ room.members.count | number }} number of online members</span>
       </div>
       <div>
         <span class="sign">&#62;</span>
-        <button (click)="view = 'chats'">Go Back</button>
+        <span>Room alias (only for you): </span>
+        <input [(ngModel)]="room.alias" (blur)="room.save()" placeholder="Friends">
+      </div>
+      <div>
+        <span class="sign">&#62;</span>
+        <button (click)="room.remove()">Leave Room</button>
+      </div>
+      <div>
+        <span class="sign">&#62;</span>
+        <button (click)="room.clearMessages(); view = 'messages'">Clear History</button>
+      </div>
+      <div>
+        <span class="sign">&#62;</span>
+        <button (click)="view = 'messages'">Go Back</button>
       </div>
     </div>
   </div>
 
   <!-- Chatbox -->
-  <form class="chatbox" *ngIf="view === 'chats' && members" (ngSubmit)="submit()">
+  <form class="chatbox" *ngIf="view === 'messages' && room.members" (ngSubmit)="submit()">
+
+    <!-- Message input -->
     <input type="text" class="chatbox" placeholder="Message"
            [ngModelOptions]="{ standalone: true }"
            [(ngModel)]="input">
+
+    <!-- Upload input (hidden) -->
+    <input type="file" class="d-none" [accept]="imageAcceptList" #fileElement>
+
+    <!-- Upload button -->
+    <a class="upload" type="button" appUpload [fileInput]="fileElement" (upload)="submit($event)">
+      <fa-icon [fixedWidth]="true" [icon]="faUpload"></fa-icon>
+    </a>
   </form>
 </div>

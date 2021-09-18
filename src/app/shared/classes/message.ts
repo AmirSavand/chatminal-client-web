@@ -1,11 +1,36 @@
 export class Message {
 
-  static chatminal(message: string, room: string): Message {
-    return new Message('Chatminal', message, room);
+  static chatminal(message: string, temp?: boolean): Message {
+    return new Message({ user: 'Chatminal', message, temp });
   }
 
-  constructor(public user: string,
-              public message: string,
-              public room: string) {
+  user: string;
+
+  message: string;
+
+  attachment?: string;
+
+  room?: string;
+
+  presence?: boolean;
+
+  channel?: string;
+
+  /** Is this a temporary message? */
+  temp?: boolean;
+
+  get export(): Partial<Message> {
+    let output: Partial<Message> = {
+      user: this.user,
+      message: this.message,
+    };
+    if (this.attachment) {
+      output.attachment = this.attachment;
+    }
+    return output;
+  }
+
+  constructor(data: Partial<Message>) {
+    Object.assign(this, data);
   }
 }

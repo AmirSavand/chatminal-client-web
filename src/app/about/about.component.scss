@@ -2,4 +2,37 @@
 
 .wrapper {
   padding: map_get($spacers, 5);
+  display: flex;
+  align-items: center;
+
+  > .terminal {
+    margin-right: map_get($spacers, 3);
+    width: 100%;
+  }
+
+  > .logo {
+    min-width: 64px;
+    flex-basis: 64px;
+
+    > img {
+      max-width: 64px;
+    }
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .wrapper {
+    flex-direction: column;
+
+    > .terminal {
+      margin-right: 0;
+      order: 1;
+    }
+
+    > .logo {
+      margin-bottom: map_get($spacers, 3);
+      text-align: center;
+      width: 100%;
+    }
+  }
 }

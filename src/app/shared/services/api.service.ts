@@ -14,7 +14,13 @@ export class ApiService {
   constructor(private http: HttpClient) {
   }
 
-  postMessage(data: Message): Observable<'created'> {
-    return this.http.post<'created'>(`${ApiService.BASE}message/`, data);
+  postMessage(data: Message): Observable<Message> {
+    return this.http.post<Message>(`${ApiService.BASE}message/`, Object.assign(data, { presence: true }));
+  }
+
+  postFile(file: File): Observable<{ file: string }> {
+    const payload = new FormData();
+    payload.append('file', file, file.name);
+    return this.http.post<{ file: string }>(`${ApiService.BASE}file/`, payload);
   }
 }

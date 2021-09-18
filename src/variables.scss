@@ -8,12 +8,13 @@ $info: #0fbcf9;
 
 $dark-lighten: lighten($dark, 5);
 $dark-darken: darken($dark, 5);
+$dark-darken-2: darken($dark, 10);
 
 $light-lighten: lighten($light, 5);
 $light-darken: darken($light, 15);
 
 $body-color: $light;
-$body-bg: $dark;
+$body-bg: $dark-darken-2;
 
 $border-color: $dark-lighten;
 $border-width: 0;

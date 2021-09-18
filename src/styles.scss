@@ -116,6 +116,7 @@ button,
   font-family: $font-family-monospace;
   line-height: $line-height-lg;
   white-space: pre-wrap;
+  word-wrap: break-word;
   color: $secondary;
 
   .sign {
@@ -127,12 +128,26 @@ button,
     }
   }
 
-  input {
+  input,
+  select {
     background: none;
     border: none;
     padding: 0;
     outline: none;
     border-bottom: 1px solid $secondary;
+
+    &[type=range] {
+      vertical-align: text-top;
+    }
+
+    &:focus {
+      border-color: $primary;
+    }
+
+    option {
+      background: $dark;
+      padding: map_get($spacers, 1);
+    }
   }
 
   a, button {
@@ -145,4 +160,23 @@ button,
       opacity: 0.5;
     }
   }
+
+  .full {
+    width: 100%;
+    display: block;
+    margin: map_get($spacers, 2) 0;
+  }
+}
+
+.font-normal {
+  font-family: $font-family-base;
+  font-weight: $font-weight-normal;
+}
+
+.badge {
+  border-radius: $border-radius-pill;
+  padding: 0 map_get($spacers, 2);
+  font-size: $font-size-sm;
+  background: $secondary;
+  color: white;
 }

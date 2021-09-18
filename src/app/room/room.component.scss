@@ -16,22 +16,11 @@
   > .view {
     height: 100%;
     overflow-y: scroll;
-
-    > .chat {
-      margin: map_get($spacers, 3);
-
-      > .user {
-        color: $secondary;
-      }
-
-      > .message {
-
-      }
-    }
   }
 
   > .chatbox {
     margin-top: auto;
+    display: flex;
 
     > input {
       width: 100%;
@@ -41,12 +30,26 @@
       padding: map_get($spacers, 3);
       color: $light;
       outline: 0;
-      background: none;
       transition: all ease-in-out 200ms;
       background: rgba($dark, 0.75);
 
       &:focus {
         background: rgba($dark-lighten, 0.75);
+      }
+    }
+
+    > .upload {
+      background: rgba($dark, 0.75);
+      padding: map_get($spacers, 3);
+      color: $light;
+
+      &:hover,
+      &:focus {
+        background: rgba($dark-lighten, 0.75);
+      }
+
+      &:active {
+        background: $dark-lighten;
       }
     }
   }

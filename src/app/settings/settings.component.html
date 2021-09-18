@@ -1,27 +1,112 @@
 <form class="wrapper terminal" [formGroup]="form.form" (ngSubmit)="submit()">
+
+  <!-- Header -->
   <div>
     <span class="sign">&#62;</span>
     <span class="text-white">Chatminal Settings</span>
   </div>
   <div>
     <span class="sign">&#62;</span>
-    <span>Display name: </span>
-    <input type="text" id="username" formControlName="username" placeholder="Username">
+    <span>Settings get stored in your browser when you save changes.</span>
+  </div>
+
+  <!-- User -->
+  <div class="mt-5">
+    <span class="sign">&#62;</span>
+    <span>User name: </span>
+    <input type="text" formControlName="username" placeholder="DexterMorgan">
+  </div>
+  <div *ngIf="form.form.get('username').invalid">
+    <span class="sign sign-log">&#62;</span>
+    <span class="text-danger">ERROR This field is required.</span>
+  </div>
+
+  <!-- Notification -->
+  <div class="mt-5">
+    <span class="sign">&#62;</span>
+    <span>Notification enable: </span>
+    <input type="checkbox" formControlName="notificationEnable">
   </div>
   <div>
     <span class="sign">&#62;</span>
+    <span>Notification rate (seconds): </span>
+    <input type="number" min="0" step="1" formControlName="notificationRate">
+  </div>
+  <div>
+    <span class="sign">&#62;</span>
+    <span>Notification when focused: </span>
+    <input type="checkbox" formControlName="notificationWhenFocused">
+  </div>
+  <div>
+    <span class="sign">&#62;</span>
+    <span>Notification sound: </span>
+    <select formControlName="notificationSound">
+      <option *ngFor="let sound of sounds" [ngValue]="sound">{{ sound }}</option>
+    </select>
+  </div>
+  <div>
+    <span class="sign">&#62;</span>
+    <span>Notification sound enable: </span>
+    <input type="checkbox" formControlName="notificationSoundEnable">
+  </div>
+  <div>
+    <span class="sign">&#62;</span>
+    <span>Notification sound volume: </span>
+    <input type="range" step="1" min="1" max="100" formControlName="notificationSoundVolume">
+  </div>
+
+  <!-- Background effect -->
+  <div class="mt-5">
+    <span class="sign">&#62;</span>
+    <span>Background effect enable: </span>
+    <input type="checkbox" formControlName="backgroundEffectEnable">
+  </div>
+  <div>
+    <span class="sign">&#62;</span>
+    <span>Background effect color: </span>
+    <input type="text" formControlName="backgroundEffectColor" placeholder="#00FF00">
+  </div>
+  <div *ngIf="form.form.get('backgroundEffectColor').invalid">
+    <span class="sign sign-log">&#62;</span>
+    <span class="text-danger">ERROR This field is required.</span>
+  </div>
+  <div>
+    <span class="sign">&#62;</span>
+    <span>Background effect speed: </span>
+    <input type="range" step="1" min="1" max="100" formControlName="backgroundEffectSpeed">
+  </div>
+  <div *ngIf="form.form.get('backgroundEffectSpeed').invalid">
+    <span class="sign sign-log">&#62;</span>
+    <span class="text-danger">ERROR This field is required.</span>
+  </div>
+
+  <!-- Actions -->
+  <div class="mt-5">
+    <span class="sign">&#62;</span>
     <button (click)="submit()">Save Changes</button>
   </div>
-  <div *ngIf="form.error.detail || form.success">
+  <div *ngIf="form.form.untouched && (form.error.detail || form.success)">
     <span class="sign sign-log">&#62;</span>
     <span class="text-muted">Saving settings changes...</span>
   </div>
-  <div *ngIf="form.success">
+  <div *ngIf="form.form.untouched && form.success">
     <span class="sign sign-log">&#62;</span>
     <span class="text-success">Settings saved successfully.</span>
   </div>
-  <div *ngIf="form.error.detail">
+  <div *ngIf="form.form.untouched && form.error.detail">
     <span class="sign sign-log">&#62;</span>
     <span class="text-danger">ERROR {{ form.error.detail }}</span>
+  </div>
+  <div>
+    <span class="sign">&#62;</span>
+    <button type="button" (click)="markAllAsRead()">Mark All Rooms As Read</button>
+  </div>
+  <div>
+    <span class="sign">&#62;</span>
+    <button type="button" (click)="resetUser()">Reset Settings</button>
+  </div>
+  <div>
+    <span class="sign">&#62;</span>
+    <button type="button" (click)="resetRooms()">Leave All Rooms</button>
   </div>
 </form>

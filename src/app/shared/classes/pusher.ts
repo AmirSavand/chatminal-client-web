@@ -44,8 +44,10 @@ export class Pusher {
       forceTLS: true,
     });
     /** Subscribe to username changes. */
-    Pusher.userSubscription = User.EVENT.subscribe((): void => {
-      Pusher.pusher.config.auth.params.user = User.username;
+    Pusher.userSubscription = User.EVENT.subscribe({
+      next: (): void => {
+        Pusher.pusher.config.auth.params.user = User.username;
+      },
     });
   }
 

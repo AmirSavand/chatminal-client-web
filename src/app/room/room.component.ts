@@ -1,15 +1,19 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Message } from '@app/shared/classes/message';
-import { Pusher, PusherEvent, PusherError } from '@app/shared/classes/pusher';
 import { Room } from '@app/shared/classes/room';
 import { User } from '@app/shared/classes/user';
 import { ApiService } from '@app/shared/services/api.service';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faCog } from '@fortawesome/free-solid-svg-icons/faCog';
+import { faFileUpload } from '@fortawesome/free-solid-svg-icons/faFileUpload';
 import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers';
-import { Members, PresenceChannel } from 'pusher-js';
+import { UploadDirective } from '@modules/upload/upload.directive';
+import { Subscription } from 'rxjs';
 
+/**
+ * @todo Make settings its own page.
+ */
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
@@ -17,26 +21,25 @@ import { Members, PresenceChannel } from 'pusher-js';
 })
 export class RoomComponent implements OnInit, OnDestroy {
 
-  static readonly MAX_MESSAGES = 500;
+  /** Subscriptions inside the params watch. */
+  private paramSubscription = new Subscription();
+
+  /** Every subscription except {@see paramSubscription}. */
+  private subscriptions = new Subscription();
 
   readonly faSettings: IconDefinition = faCog;
   readonly faUsers: IconDefinition = faUsers;
+  readonly faUpload: IconDefinition = faFileUpload;
+
+  readonly imageAcceptList = UploadDirective.IMAGE_ACCEPT_LIST;
 
   @ViewChild('viewElement') chatsElement: ElementRef<HTMLDivElement>;
 
   room: Room;
 
-  messages: Message[] = [];
-
   input = '';
 
-  channel: PresenceChannel;
-
-  user = User;
-
-  members: Members;
-
-  view: 'chats' | 'settings' = 'chats';
+  view: 'messages' | 'settings' = 'messages';
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -44,81 +47,68 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   private scrollChatsToBottom(): void {
-    if (this.view === 'chats') {
+    if (this.view === 'messages') {
       setTimeout((): void => {
         const element: HTMLDivElement = this.chatsElement.nativeElement;
         element.scrollTop = element.scrollHeight;
+        this.room.markAsRead();
       });
     }
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe((data: Params): void => {
-      this.view = 'chats';
+    this.subscriptions.add(this.route.params.subscribe((data: Params): void => {
+      this.paramSubscription.unsubscribe();
+      this.paramSubscription = new Subscription();
+      this.view = 'messages';
       this.room = Room.get(data.id);
       if (!this.room) {
         this.room = new Room({ id: data.id });
         Room.save();
       }
-      if (this.channel) {
-        Pusher.unsubscribe(this.channel);
-        this.messages = [];
-      }
-      this.messages.push(Message.chatminal(`Connecting to room ${this.room.id}...`, this.room.id));
-      this.channel = Pusher.subscribe(this.room.channel) as PresenceChannel;
-      this.channel.bind(PusherEvent.SUCCESS, (members: Members): void => {
-        this.members = members;
-        this.messages.push(Message.chatminal(`Connected to the room. You are now online.`, this.room.id));
-      });
-      this.channel.bind(PusherEvent.MEMBER_ADDED, ({ id }: { id: string }): void => {
-        this.members = this.channel.members;
-        this.messages.push(Message.chatminal(`${id} join the room.`, this.room.id));
-      });
-      this.channel.bind(PusherEvent.MEMBER_REMOVED, ({ id }: { id: string }): void => {
-        this.members = this.channel.members;
-        this.messages.push(Message.chatminal(`${id} left the room.`, this.room.id));
-      });
-      this.channel.bind(PusherEvent.ERROR, (error: PusherError): void => {
-        this.messages.push(Message.chatminal('Failed to connect to the room.', this.room.id));
-        this.messages.push(Message.chatminal(`${error.type} ${error.type} (${error.status}).`, this.room.id));
-      });
-      this.channel.bind('message', (data: Message): void => {
-        if (data.user !== User.username) {
-          this.messages.push(new Message(data.user, data.message, data.room));
+      this.paramSubscription.add(this.room.onMessage.subscribe({
+        next: (): void => {
           this.scrollChatsToBottom();
-        }
-        if (this.messages.length > RoomComponent.MAX_MESSAGES) {
-          this.messages = this.messages.splice(this.messages.length - RoomComponent.MAX_MESSAGES, this.messages.length);
-        }
-      });
-    });
+        },
+      }));
+      this.paramSubscription.add(this.room.onRemove.subscribe({
+        next: (): void => {
+          this.router.navigateByUrl('/');
+        },
+      }))
+      this.scrollChatsToBottom();
+    }));
   }
 
   ngOnDestroy(): void {
-    Pusher.unsubscribe(this.channel);
+    this.paramSubscription.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
-  submit(): void {
-    if (this.input) {
-      const message = new Message(User.username, this.input, this.room.id);
-      this.api.postMessage(message).subscribe();
-      this.messages.push(message);
-      this.scrollChatsToBottom();
+  submit(attachment?: string): void {
+    if (this.input || attachment) {
+      const message = new Message({
+        user: User.username,
+        message: this.input,
+        room: this.room.id,
+        attachment,
+      });
+      this.api.postMessage(message).subscribe({
+        next: (data: Message): void => {
+          setTimeout((): void => {
+            Object.assign(message, data);
+          })
+        },
+      });
     }
     this.input = '';
   }
 
   showMembers(): void {
-    this.view = 'chats';
-    if (this.members?.count) {
-      const members: string = Object.keys(this.members.members).map((id: string): string => id).join(', ');
-      this.messages.push(Message.chatminal(`Online members are ${members}`, this.room.id));
+    this.view = 'messages';
+    if (this.room.members?.count) {
+      const members: string = Object.keys(this.room.members.members).map((id: string): string => id).join(', ');
+      this.room.addMessage(Message.chatminal(`Online members are ${members}`, true));
     }
-  }
-
-  remove(): void {
-    Room.remove(this.room.id);
-    Room.save();
-    this.router.navigateByUrl('/');
   }
 }
