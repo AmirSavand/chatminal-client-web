@@ -12,7 +12,7 @@ export class Notification {
   }
 
   private static get isReadyByRate(): boolean {
-    return Date.now() - Notification.lastNotification >= Notification.rate;
+    return Date.now() - Notification.lastNotification >= Notification.rate * 1000;
   }
 
   private static get isReadyByFocus(): boolean {
@@ -103,6 +103,7 @@ export class Notification {
       return;
     }
     Notification.triggerSound();
+    Notification.updateLastNotification();
     Notification.NOTIFICATION.emit(true);
   }
 }

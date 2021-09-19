@@ -27,26 +27,23 @@
       <!-- AUDIO -->
       <audio *ngSwitchCase="fileGroup.AUDIO" [src]="message.file.url" class="block w-100" controls></audio>
 
-      <!-- APPLICATION -->
-      <ng-container *ngIf="fileGroup.APP">
-        <span class="sign sign-log">&#62;</span>
-      </ng-container>
-
       <!-- TEXT and OTHER -->
       <ng-container *ngSwitchDefault>
+
+        <!-- Sign -->
+        <ng-container *ngIf="!fileContent[message.file.url]">
+          <span class="sign sign-log">&#62;</span>
+        </ng-container>
 
         <!-- Download file or preview -->
         <ng-container *ngIf="!fileContent[message.file.url]">
 
-          <!-- Sign -->
-          <span class="sign sign-log">&#62;</span>
-
           <!-- Download preview (for TEXT) -->
-          <a (click)="loadFileContent(message.file)" *ngIf="message.file.group && fileGroup.TEXT">Download Preview</a>
+          <a (click)="loadFileContent(message.file)" *ngIf="message.file.group === fileGroup.TEXT">Download Preview</a>
 
           <!-- DOWNLOAD file (for OTHER) -->
-          <a [href]="message.file.url" target="_blank" download>Download File </a>
-          <span>{{ message.file.name }} [{{ message.file.size | bytes }}] [{{ message.file.type }}]</span>
+          <a [href]="message.file.url" *ngIf="message.file.group !== fileGroup.TEXT" target="_blank" download>Download File</a>
+          <span> {{ message.file.name }} [{{ message.file.size | bytes }}] [{{ message.file.type }}]</span>
         </ng-container>
 
         <!-- Content -->
