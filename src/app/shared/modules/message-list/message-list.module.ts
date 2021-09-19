@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { BytesPipeModule } from '@modules/bytes/bytes.module';
 
 import { MessageListComponent } from './message-list.component';
 
@@ -12,6 +13,7 @@ import { MessageListComponent } from './message-list.component';
   ],
   imports: [
     CommonModule,
+    BytesPipeModule,
   ],
 })
 export class MessageListModule {

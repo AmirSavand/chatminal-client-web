@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Message } from '@app/shared/classes/message';
 import { Room } from '@app/shared/classes/room';
 import { User } from '@app/shared/classes/user';
+import { File } from '@app/shared/interfaces/file';
 import { ApiService } from '@app/shared/services/api.service';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faCog } from '@fortawesome/free-solid-svg-icons/faCog';
@@ -30,8 +31,6 @@ export class RoomComponent implements OnInit, OnDestroy {
   readonly faSettings: IconDefinition = faCog;
   readonly faUsers: IconDefinition = faUsers;
   readonly faUpload: IconDefinition = faFileUpload;
-
-  readonly imageAcceptList = UploadDirective.IMAGE_ACCEPT_LIST;
 
   @ViewChild('viewElement') chatsElement: ElementRef<HTMLDivElement>;
 
@@ -85,13 +84,13 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  submit(attachment?: string): void {
-    if (this.input || attachment) {
+  submit(file?: File): void {
+    if (this.input || file) {
       const message = new Message({
         user: User.username,
         message: this.input,
         room: this.room.id,
-        attachment,
+        file,
       });
       this.api.postMessage(message).subscribe({
         next: (data: Message): void => {

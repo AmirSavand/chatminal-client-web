@@ -151,7 +151,7 @@ button,
   }
 
   a, button {
-    color: $primary;
+    color: $primary !important;
     border: none;
     padding: 0;
     background: none;
@@ -161,10 +161,18 @@ button,
     }
   }
 
-  .full {
-    width: 100%;
+  .block {
+    max-width: 100%;
     display: block;
     margin: map_get($spacers, 2) 0;
+  }
+
+  pre {
+    padding: map_get($spacers, 3);
+    background: darken($dark, 8);
+    color: $light;
+    max-height: 400px;
+    overflow-y: auto;
   }
 }
 

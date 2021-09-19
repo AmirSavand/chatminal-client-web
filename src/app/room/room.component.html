@@ -2,7 +2,8 @@
 
   <!-- Header -->
   <div class="header">
-    <div class="fw-bold me-auto">Room <span class="font-monospace">{{ room.id }}</span></div>
+    <div class="fw-bold me-auto" *ngIf="room.alias">{{ room.alias }}</div>
+    <div class="fw-bold me-auto" *ngIf="!room.alias">Room <span class="font-monospace">{{ room.id }}</span></div>
     <a class="text-secondary" *ngIf="room.members" (click)="showMembers()" title="Click to show members">
       <span class="me-1">{{ room.members.count | number }}</span>
       <fa-icon [fixedWidth]="true" [icon]="faUsers"></fa-icon>
@@ -38,7 +39,7 @@
       </div>
       <div *ngIf="room.members">
         <span class="sign">&#62;</span>
-        <span>{{ room.members.count | number }} number of online members</span>
+        <span>Online currently: <span class="text-success">{{ room.members.count | number }}</span></span>
       </div>
       <div>
         <span class="sign">&#62;</span>
@@ -69,7 +70,7 @@
            [(ngModel)]="input">
 
     <!-- Upload input (hidden) -->
-    <input type="file" class="d-none" [accept]="imageAcceptList" #fileElement>
+    <input type="file" class="d-none" #fileElement>
 
     <!-- Upload button -->
     <a class="upload" type="button" appUpload [fileInput]="fileElement" (upload)="submit($event)">

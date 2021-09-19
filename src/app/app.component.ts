@@ -7,6 +7,7 @@ import { Pusher } from '@app/shared/classes/pusher';
 import { Room } from '@app/shared/classes/room';
 import { User } from '@app/shared/classes/user';
 import { VERSION } from '@app/shared/consts/version';
+import { ApiService } from '@app/shared/services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   active: RoomComponent | any;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private api: ApiService) {
   }
 
   private startBackgroundEffect(): void {
@@ -79,7 +81,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
     Room.ON_MESSAGE.subscribe({
       next: ({ room, message }: { room: Room; message: Message }): void => {
-        /** Ff message is not from current user and not temp message. */
+        /** If message is not from current user and not temp message. */
         if (message.user !== User.username && !message.temp) {
           /** Trigger notification. */
           Notification.trigger();

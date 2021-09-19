@@ -1,15 +1,11 @@
 import { Directive, HostListener, Input, Output, EventEmitter, OnInit, Renderer2 } from '@angular/core';
+import { File as AppFile } from '@app/shared/interfaces/file';
 import { ApiService } from '@app/shared/services/api.service';
 
 @Directive({
   selector: '[appUpload]',
 })
 export class UploadDirective implements OnInit {
-
-  /**
-   * List of accepted file formats for picture selection.
-   */
-  static readonly IMAGE_ACCEPT_LIST = ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif', 'image/svg+xml'];
 
   /**
    * Input element required to handle file selection.
@@ -19,7 +15,7 @@ export class UploadDirective implements OnInit {
   /**
    * Upload event (when file upload is finished).
    */
-  @Output() upload = new EventEmitter<string>();
+  @Output() upload = new EventEmitter<AppFile>();
 
   /**
    * On directive click, open file selection.
@@ -50,8 +46,10 @@ export class UploadDirective implements OnInit {
     this.fileInput.value = '';
     // Iterate through given files
     for (const file of files) {
-      this.api.postFile(file).subscribe(({ file }: { file: string }): void => {
-        this.upload.emit(file);
+      this.api.postFileUpload(file).subscribe({
+        next: (response: AppFile): void => {
+          this.upload.emit(response);
+        },
       });
     }
   }

@@ -1,11 +1,59 @@
+<!-- Wrapper -->
 <div class="terminal {{ classes }}">
+
+  <!-- Message -->
   <div *ngFor="let message of messages">
+
+    <!-- Line sign -->
     <span class="sign">&#62;</span>
-    <span [class.text-primary]="message.user === 'Chatminal'"
-          [class.text-info]="message.user === user.username">
-          <span>{{ message.user }}: </span>
-        </span>
-    <span class="text-light font-normal">{{ message.message }}</span>
-    <img [alt]="message.attachment" class="full mw-100" [src]="message.attachment" *ngIf="message.attachment">
+
+    <!-- User -->
+    <span [class.text-info]="message.user === user.username" *ngIf="!message.temp">{{ message.user }}: </span>
+
+    <!-- Content -->
+    <span [class.text-light]="!message.temp" [class.font-normal]="!message.temp">{{ message.message }}</span>
+
+    <!-- File -->
+    <div *ngIf="message.file" [ngSwitch]="message.file.group">
+
+      <!-- IMAGE -->
+      <img class="block" *ngSwitchCase="fileGroup.IMAGE" [alt]="message.file.name" [src]="message.file.url">
+
+      <!-- VIDEO -->
+      <video *ngSwitchCase="fileGroup.VIDEO" class="block ratio-16x9" controls preload="metadata">
+        <source [src]="message.file.url" [type]="message.file.type">
+      </video>
+
+      <!-- AUDIO -->
+      <audio *ngSwitchCase="fileGroup.AUDIO" [src]="message.file.url" class="block w-100" controls></audio>
+
+      <!-- APPLICATION -->
+      <ng-container *ngIf="fileGroup.APP">
+        <span class="sign sign-log">&#62;</span>
+      </ng-container>
+
+      <!-- TEXT and OTHER -->
+      <ng-container *ngSwitchDefault>
+
+        <!-- Download file or preview -->
+        <ng-container *ngIf="!fileContent[message.file.url]">
+
+          <!-- Sign -->
+          <span class="sign sign-log">&#62;</span>
+
+          <!-- Download preview (for TEXT) -->
+          <a (click)="loadFileContent(message.file)" *ngIf="message.file.group && fileGroup.TEXT">Download Preview</a>
+
+          <!-- DOWNLOAD file (for OTHER) -->
+          <a [href]="message.file.url" target="_blank" download>Download File </a>
+          <span>{{ message.file.name }} [{{ message.file.size | bytes }}] [{{ message.file.type }}]</span>
+        </ng-container>
+
+        <!-- Content -->
+        <ng-container *ngIf="message.file.group === fileGroup.TEXT && fileContent[message.file.url]">
+          <pre>{{ fileContent[ message.file.url ] }}</pre>
+        </ng-container>
+      </ng-container>
+    </div>
   </div>
 </div>

@@ -1,3 +1,5 @@
+import { File } from '@app/shared/interfaces/file';
+
 export class Message {
 
   static chatminal(message: string, temp?: boolean): Message {
@@ -8,7 +10,7 @@ export class Message {
 
   message: string;
 
-  attachment?: string;
+  file?: File;
 
   room?: string;
 
@@ -24,8 +26,8 @@ export class Message {
       user: this.user,
       message: this.message,
     };
-    if (this.attachment) {
-      output.attachment = this.attachment;
+    if (this.file) {
+      output.file = this.file;
     }
     return output;
   }

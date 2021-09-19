@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Message } from '@app/shared/classes/message';
+import { File as AppFile } from '@app/shared/interfaces/file';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 
@@ -18,9 +19,15 @@ export class ApiService {
     return this.http.post<Message>(`${ApiService.BASE}message/`, Object.assign(data, { presence: true }));
   }
 
-  postFile(file: File): Observable<{ file: string }> {
+  postFileUpload(file: File): Observable<AppFile> {
     const payload = new FormData();
     payload.append('file', file, file.name);
-    return this.http.post<{ file: string }>(`${ApiService.BASE}file/`, payload);
+    return this.http.post<AppFile>(`${ApiService.BASE}file/upload/`, payload);
+  }
+
+  postFileDownload(file: AppFile): Observable<string> {
+    return this.http.post(`${ApiService.BASE}file/download/`, file, {
+      responseType: 'text',
+    });
   }
 }
