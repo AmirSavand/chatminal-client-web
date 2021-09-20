@@ -1,3 +1,4 @@
+import { Utils } from '@app/shared/classes/utils';
 import { File } from '@app/shared/interfaces/file';
 
 export class Message {
@@ -8,6 +9,8 @@ export class Message {
 
   user: string;
 
+  userColor?: string;
+
   message: string;
 
   file?: File;
@@ -17,6 +20,9 @@ export class Message {
   presence?: boolean;
 
   channel?: string;
+
+  /** Is message content multiline? */
+  multiline = false;
 
   /** Is this a temporary message? */
   temp?: boolean;
@@ -34,5 +40,15 @@ export class Message {
 
   constructor(data: Partial<Message>) {
     Object.assign(this, data);
+    this.checkMultiline();
+    this.checkUserColor();
+  }
+
+  checkMultiline(): void {
+    this.multiline = this.message.includes('\n');
+  }
+
+  checkUserColor(): void {
+    this.userColor = Utils.shadeColor(Utils.getColorFromString(this.user), 90);
   }
 }

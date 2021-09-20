@@ -31,7 +31,7 @@ export class MessageListComponent {
       return;
     }
     this.api.postFileDownload(file).subscribe((content: string): void => {
-      this.fileContent[file.url] = content;
+      this.fileContent[file.url] = ['```', content, '```'].join('\n');
     });
   }
 }

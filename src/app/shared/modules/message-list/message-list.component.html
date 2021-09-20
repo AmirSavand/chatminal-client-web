@@ -4,14 +4,22 @@
   <!-- Message -->
   <div *ngFor="let message of messages">
 
-    <!-- Line sign -->
-    <span class="sign">&#62;</span>
-
     <!-- User -->
-    <span [class.text-info]="message.user === user.username" *ngIf="!message.temp">{{ message.user }}: </span>
+    <span class="font-normal"
+          [style.color]="message.userColor"
+          *ngIf="!message.temp">
+      <span>{{ message.user }}</span>
+    </span>
 
     <!-- Content -->
-    <span [class.text-light]="!message.temp" [class.font-normal]="!message.temp">{{ message.message }}</span>
+    <span [class.text-light]="!message.temp" [class.mt-2]="message.multiline" [class.d-block]="message.multiline">
+
+      <!-- Message content (non-markdown) -->
+      <span *ngIf="message.temp">{{ message.message }}</span>
+
+      <!-- Message content (markdown) -->
+      <markdown *ngIf="!message.temp" [data]="message.message" emoji></markdown>
+    </span>
 
     <!-- File -->
     <div *ngIf="message.file" [ngSwitch]="message.file.group">
@@ -30,26 +38,25 @@
       <!-- TEXT and OTHER -->
       <ng-container *ngSwitchDefault>
 
-        <!-- Sign -->
-        <ng-container *ngIf="!fileContent[message.file.url]">
-          <span class="sign sign-log">&#62;</span>
-        </ng-container>
-
         <!-- Download file or preview -->
         <ng-container *ngIf="!fileContent[message.file.url]">
 
           <!-- Download preview (for TEXT) -->
-          <a (click)="loadFileContent(message.file)" *ngIf="message.file.group === fileGroup.TEXT">Download Preview</a>
+          <a (click)="loadFileContent(message.file)" *ngIf="message.file.group === fileGroup.TEXT">
+            <span>Download Preview</span>
+          </a>
 
           <!-- DOWNLOAD file (for OTHER) -->
-          <a [href]="message.file.url" *ngIf="message.file.group !== fileGroup.TEXT" target="_blank" download>Download File</a>
+          <a [href]="message.file.url" *ngIf="message.file.group !== fileGroup.TEXT" target="_blank" download>
+            <span>Download File</span>
+          </a>
           <span> {{ message.file.name }} [{{ message.file.size | bytes }}] [{{ message.file.type }}]</span>
         </ng-container>
 
         <!-- Content -->
-        <ng-container *ngIf="message.file.group === fileGroup.TEXT && fileContent[message.file.url]">
-          <pre>{{ fileContent[ message.file.url ] }}</pre>
-        </ng-container>
+        <markdown *ngIf="message.file.group === fileGroup.TEXT && fileContent[message.file.url]"
+                  [data]="fileContent[ message.file.url ]">
+        </markdown>
       </ng-container>
     </div>
   </div>

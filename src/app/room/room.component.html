@@ -17,7 +17,7 @@
   <div class="view" #viewElement>
 
     <!-- View: Messages -->
-    <app-message-list classes="mx-5 mt-5 mb-2"
+    <app-message-list classes="m-3"
                       [messages]="room.messages"
                       *ngIf="view === 'messages'">
     </app-message-list>
@@ -65,16 +65,37 @@
   <form class="chatbox" *ngIf="view === 'messages' && room.members" (ngSubmit)="submit()">
 
     <!-- Message input -->
-    <input type="text" class="chatbox" placeholder="Message"
-           [ngModelOptions]="{ standalone: true }"
-           [(ngModel)]="input">
+    <textarea type="text"
+              placeholder="Message"
+              autocomplete="off"
+              autocapitalize="on"
+              appAutoFocus
+              [class.big]="chatboxBig"
+              #chatboxElement
+              (keydown.control.enter)="submit()"
+              [required]="true"
+              [rows]="3"
+              [ngModelOptions]="{ standalone: true }"
+              (ngModelChange)="chatboxChange($event)"
+              [(ngModel)]="input">
+    </textarea>
 
     <!-- Upload input (hidden) -->
     <input type="file" class="d-none" #fileElement>
 
     <!-- Upload button -->
-    <a class="upload" type="button" appUpload [fileInput]="fileElement" (upload)="submit($event)">
+    <button class="button"
+            type="button"
+            title="Upload File"
+            appUpload
+            [fileInput]="fileElement"
+            (upload)="submit($event)">
       <fa-icon [fixedWidth]="true" [icon]="faUpload"></fa-icon>
-    </a>
+    </button>
+
+    <!-- Send button -->
+    <button class="button" *ngIf="input" title="Send Message (CTRL + Enter)">
+      <fa-icon [fixedWidth]="true" [icon]="faSend"></fa-icon>
+    </button>
   </form>
 </div>

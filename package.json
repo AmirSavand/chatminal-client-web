@@ -1,6 +1,6 @@
 {
   "name": "chatminal",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "private": true,
   "scripts": {
     "ng": "ng",
@@ -30,7 +30,10 @@
     "@ngx-loading-bar/core": "^5.1.2",
     "@ngx-loading-bar/http-client": "^5.1.2",
     "bootstrap": "^5.1.0",
+    "emoji-toolkit": "^6.6.0",
     "ngx-bootstrap": "^7.0.0",
+    "ngx-markdown": "^12.0.1",
+    "prismjs": "^1.25.0",
     "pusher-js": "^7.0.3",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
@@ -49,6 +52,7 @@
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "4.28.2",
     "@typescript-eslint/parser": "4.28.2",
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.26.0",
     "jasmine-core": "~3.8.0",
     "karma": "~6.3.0",

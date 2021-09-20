@@ -3,13 +3,14 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Message } from '@app/shared/classes/message';
 import { Room } from '@app/shared/classes/room';
 import { User } from '@app/shared/classes/user';
+import { Utils } from '@app/shared/classes/utils';
 import { File } from '@app/shared/interfaces/file';
 import { ApiService } from '@app/shared/services/api.service';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faCog } from '@fortawesome/free-solid-svg-icons/faCog';
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons/faFileUpload';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers';
-import { UploadDirective } from '@modules/upload/upload.directive';
 import { Subscription } from 'rxjs';
 
 /**
@@ -31,12 +32,16 @@ export class RoomComponent implements OnInit, OnDestroy {
   readonly faSettings: IconDefinition = faCog;
   readonly faUsers: IconDefinition = faUsers;
   readonly faUpload: IconDefinition = faFileUpload;
+  readonly faSend: IconDefinition = faPaperPlane;
 
   @ViewChild('viewElement') chatsElement: ElementRef<HTMLDivElement>;
+  @ViewChild('chatboxElement') chatboxElement: ElementRef<HTMLTextAreaElement>;
 
   room: Room;
 
   input = '';
+
+  chatboxBig = false;
 
   view: 'messages' | 'settings' = 'messages';
 
@@ -65,6 +70,7 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.room = new Room({ id: data.id });
         Room.save();
       }
+      this.chatboxElement?.nativeElement.focus();
       this.paramSubscription.add(this.room.onMessage.subscribe({
         next: (): void => {
           this.scrollChatsToBottom();
@@ -109,5 +115,13 @@ export class RoomComponent implements OnInit, OnDestroy {
       const members: string = Object.keys(this.room.members.members).map((id: string): string => id).join(', ');
       this.room.addMessage(Message.chatminal(`Online members are ${members}`, true));
     }
+  }
+
+  chatboxChange(value: string): void {
+    this.chatboxBig = (
+      value.includes('```') ||
+      value.startsWith('#') ||
+      Utils.countStringInString(value, /\n/g) >= 3
+    );
   }
 }

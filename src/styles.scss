@@ -6,6 +6,10 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
 
+/* Prism.js */
+
+@import "~prismjs/themes/prism-tomorrow.css";
+
 /* Bootstrap */
 
 @import "~bootstrap/scss/root";
@@ -114,10 +118,13 @@ button,
 
 .terminal {
   font-family: $font-family-monospace;
-  line-height: $line-height-lg;
   white-space: pre-wrap;
   word-wrap: break-word;
   color: $secondary;
+
+  > div {
+    margin-bottom: map_get($spacers, 2);
+  }
 
   .sign {
     color: $info;
@@ -166,14 +173,6 @@ button,
     display: block;
     margin: map_get($spacers, 2) 0;
   }
-
-  pre {
-    padding: map_get($spacers, 3);
-    background: darken($dark, 8);
-    color: $light;
-    max-height: 400px;
-    overflow-y: auto;
-  }
 }
 
 .font-normal {
@@ -187,4 +186,39 @@ button,
   font-size: $font-size-sm;
   background: $secondary;
   color: white;
+}
+
+markdown {
+  white-space: initial;
+  font-family: $font-family-base;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-base;
+
+  p > strong {
+    font-weight: $font-weight-bold;
+  }
+
+  > blockquote {
+    padding: map_get($spacers, 3);
+    background: $dark;
+    border-left: 4px solid $dark-lighten;
+
+    > *:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  > pre {
+    margin: 0;
+    border-radius: $border-radius;
+    background: $dark-darken !important;
+    margin-bottom: 1rem !important;
+  }
+
+  > p > code {
+    background: $dark-lighten;
+    padding: map_get($spacers, 1) map_get($spacers, 2);
+    border-radius: $border-radius-pill;
+    color: $light;
+  }
 }

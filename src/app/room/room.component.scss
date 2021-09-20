@@ -21,27 +21,40 @@
   > .chatbox {
     margin-top: auto;
     display: flex;
+    max-height: 50%;
 
-    > input {
+    > textarea {
+      resize: none;
       width: 100%;
-      border: none;
-      border-top: $border-width solid $border-color;
-      border-radius: 0;
       padding: map_get($spacers, 3);
+      border: 0;
+      border-radius: 0;
       color: $light;
       outline: 0;
       transition: all ease-in-out 200ms;
       background: rgba($dark, 0.75);
+      height: 56px;
 
       &:focus {
         background: rgba($dark-lighten, 0.75);
       }
+
+      &:valid {
+        height: 96px;
+      }
+
+      &.big {
+        height: 500px;
+      }
     }
 
-    > .upload {
+    > .button {
       background: rgba($dark, 0.75);
       padding: map_get($spacers, 3);
       color: $light;
+      border: none;
+      display: flex;
+      align-items: center;
 
       &:hover,
       &:focus {

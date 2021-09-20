@@ -6,6 +6,7 @@ import { HttpInterceptorService } from '@app/shared/services/http-interceptor.se
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,6 +21,14 @@ import { AppComponent } from './app.component';
     LoadingBarModule,
     LoadingBarHttpClientModule,
     FontAwesomeModule,
+    MarkdownModule.forRoot({
+      markedOptions: {
+        provide: MarkedOptions,
+        useValue: {
+          breaks: true,
+        },
+      },
+    }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
