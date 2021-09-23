@@ -217,8 +217,12 @@ markdown {
 
   > p > code {
     background: $dark-lighten;
-    padding: map_get($spacers, 1) map_get($spacers, 2);
-    border-radius: $border-radius-pill;
+    padding: 2px map_get($spacers, 2);
+    border-radius: $border-radius-sm;
     color: $light;
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
   }
 }
