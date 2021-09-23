@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Inject } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Message } from '@app/shared/classes/message';
 import { Room } from '@app/shared/classes/room';
@@ -45,19 +46,10 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   view: 'messages' | 'settings' = 'messages';
 
-  constructor(private route: ActivatedRoute,
+  constructor(@Inject(DOCUMENT) private document: Document,
+              private route: ActivatedRoute,
               private router: Router,
               private api: ApiService) {
-  }
-
-  private scrollChatsToBottom(): void {
-    if (this.view === 'messages') {
-      setTimeout((): void => {
-        const element: HTMLDivElement = this.chatsElement.nativeElement;
-        element.scrollTop = element.scrollHeight;
-        this.room.markAsRead();
-      });
-    }
   }
 
   ngOnInit(): void {
@@ -73,7 +65,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       this.chatboxElement?.nativeElement.focus();
       this.paramSubscription.add(this.room.onMessage.subscribe({
         next: (): void => {
-          this.scrollChatsToBottom();
+          this.chatboxScrollDown();
         },
       }));
       this.paramSubscription.add(this.room.onRemove.subscribe({
@@ -81,7 +73,7 @@ export class RoomComponent implements OnInit, OnDestroy {
           this.router.navigateByUrl('/');
         },
       }))
-      this.scrollChatsToBottom();
+      this.chatboxScrollDown();
     }));
   }
 
@@ -102,7 +94,7 @@ export class RoomComponent implements OnInit, OnDestroy {
         next: (data: Message): void => {
           setTimeout((): void => {
             Object.assign(message, data);
-          })
+          });
         },
       });
     }
@@ -124,5 +116,22 @@ export class RoomComponent implements OnInit, OnDestroy {
       value.startsWith('#') ||
       Utils.countStringInString(value, /\n/g) >= 3
     );
+    if (this.chatboxBig) {
+      this.chatboxScrollDown();
+    }
+  }
+
+  chatboxNewLine(): void {
+    this.document.execCommand('insertText', false, '\n');
+  }
+
+  chatboxScrollDown(): void {
+    if (this.view === 'messages') {
+      setTimeout((): void => {
+        const element: HTMLDivElement = this.chatsElement.nativeElement;
+        element.scrollTop = element.scrollHeight;
+        this.room.markAsRead();
+      });
+    }
   }
 }

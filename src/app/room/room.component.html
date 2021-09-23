@@ -72,7 +72,8 @@
               appAutoFocus
               [class.big]="chatboxBig"
               #chatboxElement
-              (keydown.control.enter)="submit()"
+              (keydown.enter)="$event.preventDefault(); submit()"
+              (keydown.control.enter)="chatboxNewLine()"
               [required]="true"
               [rows]="3"
               [ngModelOptions]="{ standalone: true }"
