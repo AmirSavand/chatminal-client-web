@@ -11,6 +11,8 @@
     "build-staging": "ng build -c staging",
     "build-production": "ng build -c production",
     "test": "ng test",
+    "test-headless": "ng test --browsers=ChromeHeadless",
+    "test-ci": "ng test -c ci",
     "lint": "ng lint",
     "version": "node -p \"'export const VERSION = \\\"' + require('./package.json').version + '\\\";'\" > src/app/shared/consts/version.ts"
   },

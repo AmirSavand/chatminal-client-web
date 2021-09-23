@@ -1,4 +1,4 @@
-name: Code Quality
+name: Unit Test
 
 on:
   push:
@@ -8,12 +8,12 @@ on:
 
 jobs:
   code-quality:
-    name: Code Quality
+    name: Unit Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Install Dependencies
         run: npm install
-      - name: Lint
-        run: npm run lint
+      - name: Test
+        run: npm run test-ci

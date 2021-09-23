@@ -212,6 +212,13 @@
                 "with": "src/environments/environment.testing.ts"
               }
             ]
+          },
+          "configurations": {
+            "ci": {
+              "watch": false,
+              "progress": false,
+              "browsers": "ChromeHeadlessCI"
+            }
           }
         },
         "lint": {
