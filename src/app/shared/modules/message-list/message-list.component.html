@@ -12,7 +12,9 @@
     </span>
 
     <!-- Content -->
-    <span [class.text-light]="!message.temp" [class.mt-2]="message.multiline" [class.d-block]="message.multiline">
+    <span [class.text-light]="!message.temp"
+          [class.ps-2]="!message.multiline && !message.temp"
+          [class.d-inline-block]="!message.multiline">
 
       <!-- Message content (non-markdown) -->
       <span *ngIf="message.temp">{{ message.message }}</span>
