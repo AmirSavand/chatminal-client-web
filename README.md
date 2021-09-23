@@ -1,5 +1,9 @@
 # Chatminal Web
 
+[![Build](https://github.com/AmirSavand/chatminal-client-web/actions/workflows/build.yml/badge.svg)](https://github.com/AmirSavand/chatminal-client-web/actions/workflows/build.yml)
+[![Code Quality](https://github.com/AmirSavand/chatminal-client-web/actions/workflows/code-quality.yml/badge.svg)](https://github.com/AmirSavand/chatminal-client-web/actions/workflows/code-quality.yml)
+[![Unit Test](https://github.com/AmirSavand/chatminal-client-web/actions/workflows/unit-test.yml/badge.svg)](https://github.com/AmirSavand/chatminal-client-web/actions/workflows/unit-test.yml)
+
 Main web app for the Chatminal.
 
 ## Technology
