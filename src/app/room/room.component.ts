@@ -107,6 +107,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       });
     }
     this.input = '';
+    this.chatboxChange(this.input);
   }
 
   showMembers(): void {
