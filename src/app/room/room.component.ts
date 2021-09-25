@@ -8,10 +8,12 @@ import { Utils } from '@app/shared/classes/utils';
 import { File } from '@app/shared/interfaces/file';
 import { ApiService } from '@app/shared/services/api.service';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faArrowCircleDown } from '@fortawesome/free-solid-svg-icons/faArrowCircleDown';
 import { faCog } from '@fortawesome/free-solid-svg-icons/faCog';
+import { faComment } from '@fortawesome/free-solid-svg-icons/faComment';
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons/faFileUpload';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
-import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers';
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons/faUserCircle';
 import { Subscription } from 'rxjs';
 
 /**
@@ -31,11 +33,13 @@ export class RoomComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   readonly faSettings: IconDefinition = faCog;
-  readonly faUsers: IconDefinition = faUsers;
+  readonly faMessages: IconDefinition = faComment;
+  readonly faMembers: IconDefinition = faUserCircle;
   readonly faUpload: IconDefinition = faFileUpload;
   readonly faSend: IconDefinition = faPaperPlane;
+  readonly faScrollDown: IconDefinition = faArrowCircleDown;
 
-  @ViewChild('viewElement') chatsElement: ElementRef<HTMLDivElement>;
+  @ViewChild('chatsElement') chatsElement: ElementRef<HTMLDivElement>;
   @ViewChild('chatboxElement') chatboxElement: ElementRef<HTMLTextAreaElement>;
 
   room: Room;
@@ -83,6 +87,15 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   submit(file?: File): void {
+    const isUnintended: boolean = Boolean(
+      Utils.isOdd(Utils.countStringInString(this.input, /```/g)) ||
+      this.input.includes('```\n```') ||
+      this.input.includes('``````') ||
+      this.input.includes('````'),
+    );
+    if (isUnintended && !confirm('Is this what you intend to send?')) {
+      return;
+    }
     if (this.input || file) {
       const message = new Message({
         user: User.username,
@@ -119,6 +132,18 @@ export class RoomComponent implements OnInit, OnDestroy {
     if (this.chatboxBig) {
       this.chatboxScrollDown();
     }
+    /**
+     * When chatbox gets taller, messages get covered sometimes,
+     * so let's wait after animation time and check the scroll bot,
+     * if it's less than a certain amount, scroll to bottom of the page.
+     */
+    setTimeout((): void => {
+      const element: HTMLDivElement = this.chatsElement.nativeElement;
+      const scrollBottom = element.scrollHeight - element.clientHeight - element.scrollTop;
+      if (scrollBottom > 0 && scrollBottom < 300) {
+        this.chatboxScrollDown();
+      }
+    }, 200);
   }
 
   chatboxNewLine(): void {

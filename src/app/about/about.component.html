@@ -4,6 +4,7 @@
       <span class="sign">&#62;</span>
       <span class="text-white">Chatminal</span> v{{ version }}
     </div>
+    <br>
     <div>
       <span class="sign">&#62;</span>
       <span>Minimalistic chat app for web, terminal, desktop, etc.</span>
@@ -15,6 +16,18 @@
     <div>
       <span class="sign">&#62;</span>
       <span>Check <a routerLink="/settings">settings</a> to display name and other things.</span>
+    </div>
+    <div>
+      <span class="sign">&#62;</span>
+      <span>View <a target="_blank" [href]="issues">open issues</a> for what's coming in future.</span>
+    </div>
+    <br>
+    <div>
+      <span class="sign">&#62;</span>
+      <span>
+        <span>{{ now | date:'yyyy' }} &copy; Made with 💖 by </span>
+        <span><a target="_blank" [href]="savandbros">Savand Bros</a>.</span>
+      </span>
     </div>
   </div>
   <div class="logo">

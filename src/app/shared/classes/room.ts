@@ -135,7 +135,7 @@ export class Room {
     this.disconnect();
     /** Create channel and subscribe to it. */
     this.channel = Pusher.subscribe(this.channelId) as PresenceChannel;
-    this.addMessage(Message.chatminal(`Connecting to room ${this.id}...`, true));
+    this.addMessage(Message.chatminal(`Connecting to room ${this.alias || this.id}...`, true));
     /** Watch the success event. */
     this.channel.bind(PusherEvent.SUCCESS, (members: Members): void => {
       this.members = members;

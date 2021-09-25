@@ -2,6 +2,14 @@ import { Matcher } from '@app/shared/types/matcher';
 
 export class Utils {
 
+  static isOdd(value: number): boolean {
+    return Boolean(value % 2);
+  }
+
+  static isEven(value: number): boolean {
+    return !Boolean(value % 2);
+  }
+
   /**
    * Remove a child item from a list.
    */
