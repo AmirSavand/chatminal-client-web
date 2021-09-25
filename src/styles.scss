@@ -120,6 +120,7 @@ button,
   font-family: $font-family-monospace;
   white-space: pre-wrap;
   word-wrap: break-word;
+  word-break: break-all;
   color: $secondary;
 
   > div {
@@ -173,6 +174,10 @@ button,
     display: block;
     margin: map_get($spacers, 2) 0;
   }
+
+  img {
+    max-width: 100%;
+  }
 }
 
 .font-normal {
@@ -190,6 +195,7 @@ button,
 
 markdown {
   white-space: initial;
+  word-break: break-all;
   font-family: $font-family-base;
   font-weight: $font-weight-normal;
   line-height: $line-height-base;
@@ -224,5 +230,9 @@ markdown {
 
   > *:last-child {
     margin-bottom: 0;
+  }
+
+  img {
+    max-width: 100%;
   }
 }

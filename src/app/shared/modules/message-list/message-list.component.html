@@ -11,10 +11,11 @@
       <span>{{ message.user }}</span>
     </span>
 
+    <!-- Creation date -->
+    <small *ngIf="message.created" [title]="message.created | date"> {{ message.created | date:'shortTime' }}</small>
+
     <!-- Content -->
-    <span [class.text-light]="!message.temp"
-          [class.ps-2]="!message.multiline && !message.temp"
-          [class.d-inline-block]="!message.multiline">
+    <span [class.text-light]="!message.temp">
 
       <!-- Message content (non-markdown) -->
       <span *ngIf="message.temp">{{ message.message }}</span>

@@ -21,6 +21,9 @@ export class Message {
 
   channel?: string;
 
+  /** Message creation date. */
+  created?: number;
+
   /** Is message content multiline? */
   multiline = false;
 
@@ -34,6 +37,9 @@ export class Message {
     };
     if (this.file) {
       output.file = this.file;
+    }
+    if (this.created) {
+      output.created = this.created;
     }
     return output;
   }
