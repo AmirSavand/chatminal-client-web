@@ -76,7 +76,7 @@ export class RoomComponent implements OnInit, OnDestroy {
         next: (): void => {
           this.router.navigateByUrl('/');
         },
-      }))
+      }));
       this.chatboxScrollDown();
     }));
   }

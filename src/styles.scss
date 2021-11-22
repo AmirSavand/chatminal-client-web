@@ -167,6 +167,12 @@ button,
     &:active {
       opacity: 0.5;
     }
+
+    &:disabled,
+    &.disabled {
+      color: $secondary !important;
+      cursor: default;
+    }
   }
 
   .block {

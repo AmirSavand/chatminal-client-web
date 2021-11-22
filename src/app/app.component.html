@@ -18,7 +18,7 @@
         <span *ngIf="room.alias">{{ room.alias }}</span>
         <span class="ms-auto badge bg-primary" *ngIf="room.unread">{{ room.unread | number }}</span>
       </a>
-      <a class="list-group-item list-group-item-action" (click)="createRoom()">New Room</a>
+      <a class="list-group-item list-group-item-action" routerLink="new" routerLinkActive="active">New Room</a>
     </div>
     <br>
     <div class="list-group list-group-flush">

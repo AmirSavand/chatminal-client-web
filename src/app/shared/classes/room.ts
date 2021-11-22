@@ -1,8 +1,8 @@
-import { EventEmitter } from '@angular/core';
-import { Message } from '@app/shared/classes/message';
-import { Pusher, PusherEvent, PusherError } from '@app/shared/classes/pusher';
-import { Utils } from '@app/shared/classes/utils';
-import { PresenceChannel, Members } from 'pusher-js';
+import { EventEmitter } from "@angular/core";
+import { Message } from "@app/shared/classes/message";
+import { Pusher, PusherEvent, PusherError } from "@app/shared/classes/pusher";
+import { Utils } from "@app/shared/classes/utils";
+import { PresenceChannel, Members } from "pusher-js";
 
 /**
  * Room is a virtual channel for users to chat in.
@@ -19,6 +19,14 @@ export class Room {
   /** Maximum number of messages to store in {@see messages}. */
   private static readonly MAX_MESSAGES = 500;
 
+  /** Room IDs that are not allowed. */
+  private static readonly FORBIDDEN_IDS: string[] = [
+    "home",
+    "support",
+    "new",
+    "settings",
+  ];
+
   /** Triggered a room is saved to storage or loaded from storage. */
   static readonly ON_LIST_UPDATE = new EventEmitter<void>();
 
@@ -33,7 +41,7 @@ export class Room {
 
   /** Load all rooms from storage. */
   static load(): void {
-    if ('rooms' in localStorage) {
+    if ("rooms" in localStorage) {
       (JSON.parse(localStorage.rooms) as Partial<Room>[]).forEach((data: Partial<Room>): void => {
         new Room(data);
       });
@@ -43,7 +51,21 @@ export class Room {
 
   /** @returns randomly generated ID. */
   static generateId(): string {
+    const id: string = Utils.randomKey(6);
+    if (!Room.isValidId(id)) {
+      return Room.generateId();
+    }
     return Utils.randomKey(6);
+  }
+
+  /** @returns true if a room can be created with given ID. */
+  static isValidId(id: string): boolean {
+    return Boolean(
+      id.length > 3 &&
+      id.length < 64 &&
+      !(id in Room.DICT) &&
+      !Room.FORBIDDEN_IDS.includes(id)
+    );
   }
 
   /** @returns room instance by given ID or null if not found. */
@@ -119,7 +141,7 @@ export class Room {
       messages: this.messages
         .filter((message: Message): boolean => !message.temp)
         .map((message: Message): Partial<Message> => message.export),
-    }
+    };
   }
 
   /** Deletes all messages except last {@see MAX_MESSAGES}. */
@@ -153,11 +175,11 @@ export class Room {
     });
     /** Watch the error event. */
     this.channel.bind(PusherEvent.ERROR, (error: PusherError): void => {
-      this.addMessage(Message.chatminal('Failed to connect to the room.', true));
+      this.addMessage(Message.chatminal("Failed to connect to the room.", true));
       this.addMessage(Message.chatminal(`${error.type} ${error.type} (${error.status}).`, true));
     });
     /** Watch the message event. */
-    this.channel.bind('message', (data: Message): void => {
+    this.channel.bind("message", (data: Message): void => {
       /** Update messages. */
       this.addMessage(new Message(data));
     });

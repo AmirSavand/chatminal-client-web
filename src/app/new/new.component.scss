@@ -1,0 +1,7 @@
+@import "src/variables";
+
+.wrapper {
+  padding: map_get($spacers, 5);
+  overflow-y: auto;
+  max-height: 100%;
+}

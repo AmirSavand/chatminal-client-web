@@ -1,0 +1,23 @@
+<form class="wrapper terminal" [formGroup]="form.form" (ngSubmit)="submit()">
+  <div>
+    <span class="sign">&#62;</span>
+    <span class="text-white">Create Room</span>
+  </div>
+  <div>
+    <span class="sign">&#62;</span>
+    <span>Room ID: </span>
+    <input type="text" formControlName="id" placeholder="xyz-123">
+  </div>
+  <div>
+    <span class="sign">&#62;</span>
+    <button (click)="generate()" type="button">Generate ID</button>
+  </div>
+  <div>
+    <span class="sign">&#62;</span>
+    <button (click)="submit()" [disabled]="form.form.invalid">Confirm</button>
+  </div>
+  <div *ngFor="let error of form.error.non_field_errors">
+    <span class="sign sign-log">&#62;</span>
+    <span class="text-danger">ERROR {{ error }}</span>
+  </div>
+</form>

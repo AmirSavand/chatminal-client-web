@@ -1,5 +1,4 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { RoomComponent } from '@app/room/room.component';
 import { Message } from '@app/shared/classes/message';
 import { Notification } from '@app/shared/classes/notification';
@@ -7,7 +6,6 @@ import { Pusher } from '@app/shared/classes/pusher';
 import { Room } from '@app/shared/classes/room';
 import { User } from '@app/shared/classes/user';
 import { VERSION } from '@app/shared/consts/version';
-import { ApiService } from '@app/shared/services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -27,10 +25,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   version = VERSION;
 
   active: RoomComponent | any;
-
-  constructor(private router: Router,
-              private api: ApiService) {
-  }
 
   private startBackgroundEffect(): void {
     const c: HTMLCanvasElement = this.background.nativeElement;
@@ -65,7 +59,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         drops[i]++;
       }
       this.backgroundEffectTimer = setTimeout(draw, 100 - User.backgroundEffectSpeed);
-    }
+    };
     draw();
   }
 
@@ -104,15 +98,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.startBackgroundEffect();
       }
     });
-  }
-
-  createRoom(): void {
-    const id: string = prompt('Enter room ID if you want to join:', Room.generateId());
-    if (id) {
-      const room = new Room({ id });
-      Room.save();
-      this.router.navigate(['/', room.id]);
-    }
   }
 
   onActivate($event: any) {

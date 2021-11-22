@@ -36,10 +36,6 @@ export class SettingsComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {
   }
 
-  private get confirm(): boolean {
-    return confirm('> Are you sure you want to do this?\n> This action can not be undone.')
-  }
-
   ngOnInit(): void {
     this.form.form.get('notificationSound').valueChanges.subscribe({
       next: (value: string): void => {
@@ -65,9 +61,6 @@ export class SettingsComponent implements OnInit {
   }
 
   resetRooms(): void {
-    if (!this.confirm) {
-      return;
-    }
     Room.list.forEach((room: Room): void => {
       room.remove();
     });
@@ -76,9 +69,6 @@ export class SettingsComponent implements OnInit {
   }
 
   resetUser(): void {
-    if (!this.confirm) {
-      return;
-    }
     const username: string = User.username;
     User.reset();
     User.username = username;
