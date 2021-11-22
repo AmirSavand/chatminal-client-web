@@ -2,9 +2,9 @@ name: Unit Test
 
 on:
   push:
-    branches: [ master, production ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, production ]
+    branches: [ master ]
 
 jobs:
   code-quality:
