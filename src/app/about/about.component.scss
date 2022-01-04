@@ -23,6 +23,7 @@
 @include media-breakpoint-down(md) {
   .wrapper {
     flex-direction: column;
+    padding: map_get($spacers, 3);
 
     > .terminal {
       margin-right: 0;

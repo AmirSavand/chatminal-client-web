@@ -74,7 +74,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       },
     });
     Room.ON_MESSAGE.subscribe({
-      next: ({ room, message }: { room: Room; message: Message }): void => {
+      next: ({room, message}: { room: Room; message: Message }): void => {
         /** If message is not from current user and not temp message. */
         if (message.user !== User.username && !message.temp) {
           /** Trigger notification. */
@@ -100,7 +100,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onActivate($event: any) {
+  onActivate($event: RoomComponent | any): void {
     this.active = $event;
   }
 }

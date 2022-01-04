@@ -5,9 +5,18 @@
 <canvas #background></canvas>
 
 <!-- Page -->
-<div class="wrapper">
+<div class="wrapper page-{{ active?.constructor.name }}">
+
+  <!-- Sidebar -->
   <div class="sidebar">
-    <div class="fw-bold border-bottom p-3">Rooms</div>
+
+    <!-- Brand (mobile) -->
+    <div class="fw-bold border-bottom p-3 d-block d-md-none">Chatminal</div>
+
+    <!-- Room title (desktop) -->
+    <div class="fw-bold border-bottom p-3 d-none d-md-block">Rooms</div>
+
+    <!-- Rooms -->
     <div class="list-group list-group-flush">
       <a [routerLink]="[room.id]"
          [title]="room.id"
@@ -20,18 +29,30 @@
       </a>
       <a class="list-group-item list-group-item-action" routerLink="new" routerLinkActive="active">New Room</a>
     </div>
+
+    <!-- Separator -->
     <br>
+
+    <!-- Links -->
     <div class="list-group list-group-flush">
-      <a class="list-group-item list-group-item-action"
+
+      <!-- Home (desktop) -->
+      <a class="list-group-item list-group-item-action d-none d-md-block"
          routerLink="/"
          routerLinkActive="active"
          [routerLinkActiveOptions]="{ exact: true }">
         Home
       </a>
-      <a routerLink="/settings" class="list-group-item list-group-item-action" routerLinkActive="active">Settings</a>
+
+      <!-- Settings -->
+      <a routerLink="/settings" class="list-group-item list-group-item-action " routerLinkActive="active">Settings</a>
     </div>
   </div>
+
+  <!-- Page wrapper -->
   <div class="page">
+
+    <!-- Page -->
     <router-outlet (activate)="onActivate($event)"></router-outlet>
   </div>
 </div>

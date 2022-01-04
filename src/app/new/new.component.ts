@@ -3,6 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Room } from '@app/shared/classes/room';
 import { ReactiveFormData } from '@app/shared/interfaces/reactive-form-data';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 
 @Component({
   selector: 'app-new',
@@ -10,6 +12,8 @@ import { ReactiveFormData } from '@app/shared/interfaces/reactive-form-data';
   styleUrls: ['./new.component.scss'],
 })
 export class NewComponent implements OnInit {
+
+  readonly faBack: IconDefinition = faArrowLeft;
 
   readonly form: ReactiveFormData = {
     error: {},

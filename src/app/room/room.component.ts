@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Inject } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Message } from '@app/shared/classes/message';
 import { Room } from '@app/shared/classes/room';
@@ -15,6 +15,7 @@ import { faFileUpload } from '@fortawesome/free-solid-svg-icons/faFileUpload';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons/faUserCircle';
 import { Subscription } from 'rxjs';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 
 /**
  * @todo Make settings its own page.
@@ -32,6 +33,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   /** Every subscription except {@see paramSubscription}. */
   private subscriptions = new Subscription();
 
+  readonly faBack: IconDefinition = faArrowLeft;
   readonly faSettings: IconDefinition = faCog;
   readonly faMessages: IconDefinition = faComment;
   readonly faMembers: IconDefinition = faUserCircle;

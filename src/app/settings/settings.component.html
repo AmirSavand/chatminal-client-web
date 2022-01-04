@@ -1,3 +1,16 @@
+<!-- Header (mobile) -->
+<div class="header d-md-none">
+
+  <!-- Back link -->
+  <a routerLink="/" class="me-3  text-secondary">
+    <fa-icon [icon]="faBack" [fixedWidth]="true"></fa-icon>
+  </a>
+
+  <!-- Title -->
+  <span class="fw-bold">Settings</span>
+</div>
+
+<!-- Page -->
 <form class="wrapper terminal" [formGroup]="form.form" (ngSubmit)="submit()">
 
   <!-- Header -->

@@ -39,3 +39,29 @@ canvas {
     overflow: hidden;
   }
 }
+
+@include media-breakpoint-down(md) {
+  .wrapper {
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
+
+    &.page-AboutComponent {
+      height: unset !important;
+      max-height: unset !important;
+      overflow: unset !important;
+    }
+
+    &:not(.page-AboutComponent) {
+
+      > .sidebar {
+        display: none;
+      }
+    }
+
+    .sidebar {
+      width: 100%;
+      height: auto;
+    }
+  }
+}

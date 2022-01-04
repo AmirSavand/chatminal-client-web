@@ -3,6 +3,11 @@
   <!-- Header -->
   <div class="header">
 
+    <!-- Back link (mobile) -->
+    <a routerLink="/" class="me-3 d-block d-md-none text-secondary">
+      <fa-icon [icon]="faBack" [fixedWidth]="true"></fa-icon>
+    </a>
+
     <!-- Room name -->
     <div class="fw-bold me-auto">
       <ng-container *ngIf="room.alias">{{ room.alias }}</ng-container>
@@ -44,7 +49,7 @@
     </app-message-list>
 
     <!-- View: Settings -->
-    <div class="terminal m-5" *ngIf="view === 'settings'">
+    <div class="terminal m-3 m-md-5" *ngIf="view === 'settings'">
       <div>
         <span class="sign">&#62;</span>
         <span class="text-white">Room Settings</span>

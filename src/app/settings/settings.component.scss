@@ -1,7 +1,23 @@
 @import "src/variables";
 
+.header {
+  border-bottom: $border-width solid $border-color;
+  background: rgba($dark, 0.75);
+  padding: map_get($spacers, 3);
+  display: flex;
+  align-items: center;
+}
+
 .wrapper {
   padding: map_get($spacers, 5);
   overflow-y: auto;
   max-height: 100%;
+}
+
+
+@include media-breakpoint-down(md) {
+  .wrapper {
+    padding: map_get($spacers, 3);
+    padding-bottom: map_get($spacers, 5) + (map_get($spacers, 3) * 2);
+  }
 }

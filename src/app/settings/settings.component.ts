@@ -4,6 +4,8 @@ import { Notification } from '@app/shared/classes/notification';
 import { Room } from '@app/shared/classes/room';
 import { User } from '@app/shared/classes/user';
 import { ReactiveFormData } from '@app/shared/interfaces/reactive-form-data';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 
 @Component({
   selector: 'app-settings',
@@ -11,6 +13,8 @@ import { ReactiveFormData } from '@app/shared/interfaces/reactive-form-data';
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit {
+
+  readonly faBack: IconDefinition = faArrowLeft;
 
   sounds = Notification.SOUNDS;
 
