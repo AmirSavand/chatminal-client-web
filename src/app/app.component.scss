@@ -46,13 +46,13 @@ canvas {
     height: 100%;
     max-height: 100%;
 
-    &.page-AboutComponent {
+    &.page-about {
       height: unset !important;
       max-height: unset !important;
       overflow: unset !important;
     }
 
-    &:not(.page-AboutComponent) {
+    &:not(.page-about) {
 
       > .sidebar {
         display: none;

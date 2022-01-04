@@ -8,6 +8,8 @@ import { VERSION } from '@app/shared/consts/version';
 })
 export class AboutComponent {
 
+  readonly name = 'about';
+
   readonly version = VERSION;
   readonly issues = 'https://github.com/AmirSavand/chatminal-client-web/issues';
   readonly now: Date = new Date();
