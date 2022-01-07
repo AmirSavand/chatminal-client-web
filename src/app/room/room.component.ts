@@ -1,11 +1,11 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, Renderer2, HostListener } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Message } from '@app/shared/classes/message';
 import { Room } from '@app/shared/classes/room';
 import { User } from '@app/shared/classes/user';
 import { Utils } from '@app/shared/classes/utils';
-import { File } from '@app/shared/interfaces/file';
+import { File as AppFile } from '@app/shared/interfaces/file';
 import { ApiService } from '@app/shared/services/api.service';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faArrowCircleDown } from '@fortawesome/free-solid-svg-icons/faArrowCircleDown';
@@ -33,6 +33,12 @@ export class RoomComponent implements OnInit, OnDestroy {
   /** Every subscription except {@see paramSubscription}. */
   private subscriptions = new Subscription();
 
+  /**
+   * An un-listen function for disposing of paste listener.
+   * On component destroy, we call this function to dispose.
+   */
+  private pasteListener: () => void;
+
   readonly faBack: IconDefinition = faArrowLeft;
   readonly faSettings: IconDefinition = faCog;
   readonly faMessages: IconDefinition = faComment;
@@ -52,9 +58,13 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   view: 'messages' | 'settings' = 'messages';
 
+  /** Delay between uploading each file to server in milliseconds after pasting. */
+  multiFileUploadDelay = 500;
+
   constructor(@Inject(DOCUMENT) private document: Document,
               private route: ActivatedRoute,
               private router: Router,
+              private renderer2: Renderer2,
               private api: ApiService) {
   }
 
@@ -81,14 +91,38 @@ export class RoomComponent implements OnInit, OnDestroy {
       }));
       this.chatboxScrollDown();
     }));
+    this.pasteListener = this.renderer2.listen(document, 'paste', (event: ClipboardEvent): void => {
+      let clipboardData: DataTransfer = event.clipboardData || (window as any).clipboardData;
+      if (!this.room.members) {
+        this.room.messages.push(
+          Message.chatminal(`Failed to upload files from clipboard. Must be connected to the room.`, true),
+        );
+        return;
+      }
+      if (clipboardData.files.length) {
+        this.room.messages.push(
+          Message.chatminal(`Uploading ${clipboardData.files.length} file(s) from clipboard...`, true),
+        );
+        Array.from(clipboardData.files).forEach((file: File, index: number): void => {
+          setTimeout((): void => {
+            this.api.postFileUpload(file).subscribe({
+              next: (data: AppFile): void => {
+                this.submit(data);
+              },
+            });
+          }, this.multiFileUploadDelay * index);
+        });
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this.paramSubscription.unsubscribe();
     this.subscriptions.unsubscribe();
+    this.pasteListener();
   }
 
-  submit(file?: File): void {
+  submit(file?: AppFile): void {
     const isUnintended: boolean = Boolean(
       Utils.isOdd(Utils.countStringInString(this.input, /```/g)) ||
       this.input.includes('```\n```') ||
