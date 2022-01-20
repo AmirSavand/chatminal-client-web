@@ -13,7 +13,7 @@ import { RoomComponent } from 'src/app/room/room.component';
 
 @NgModule({
   declarations: [
-    RoomComponent
+    RoomComponent,
   ],
   imports: [
     CommonModule,

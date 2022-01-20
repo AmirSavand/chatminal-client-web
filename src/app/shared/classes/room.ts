@@ -1,8 +1,8 @@
-import { EventEmitter } from "@angular/core";
-import { Message } from "@app/shared/classes/message";
-import { Pusher, PusherEvent, PusherError } from "@app/shared/classes/pusher";
-import { Utils } from "@app/shared/classes/utils";
-import { PresenceChannel, Members } from "pusher-js";
+import { EventEmitter } from '@angular/core';
+import { Message } from '@app/shared/classes/message';
+import { Pusher, PusherError, PusherEvent } from '@app/shared/classes/pusher';
+import { Utils } from '@app/shared/classes/utils';
+import { Members, PresenceChannel } from 'pusher-js';
 
 /**
  * Room is a virtual channel for users to chat in.
@@ -21,10 +21,10 @@ export class Room {
 
   /** Room IDs that are not allowed. */
   private static readonly FORBIDDEN_IDS: string[] = [
-    "home",
-    "support",
-    "new",
-    "settings",
+    'home',
+    'support',
+    'new',
+    'settings',
   ];
 
   /** Triggered a room is saved to storage or loaded from storage. */
@@ -41,7 +41,7 @@ export class Room {
 
   /** Load all rooms from storage. */
   static load(): void {
-    if ("rooms" in localStorage) {
+    if ('rooms' in localStorage) {
       (JSON.parse(localStorage.rooms) as Partial<Room>[]).forEach((data: Partial<Room>): void => {
         new Room(data);
       });
@@ -64,7 +64,7 @@ export class Room {
       id.length > 3 &&
       id.length < 64 &&
       !(id in Room.DICT) &&
-      !Room.FORBIDDEN_IDS.includes(id)
+      !Room.FORBIDDEN_IDS.includes(id),
     );
   }
 
@@ -161,7 +161,7 @@ export class Room {
     /** Watch the success event. */
     this.channel.bind(PusherEvent.SUCCESS, (members: Members): void => {
       this.members = members;
-      this.addMessage(Message.chatminal(`Connected to the room. You are now online.`, true));
+      this.addMessage(Message.chatminal('Connected to the room. You are now online.', true));
     });
     /** Watch the member added event. */
     this.channel.bind(PusherEvent.MEMBER_ADDED, ({ id }: { id: string }): void => {
@@ -175,11 +175,11 @@ export class Room {
     });
     /** Watch the error event. */
     this.channel.bind(PusherEvent.ERROR, (error: PusherError): void => {
-      this.addMessage(Message.chatminal("Failed to connect to the room.", true));
+      this.addMessage(Message.chatminal('Failed to connect to the room.', true));
       this.addMessage(Message.chatminal(`${error.type} ${error.type} (${error.status}).`, true));
     });
     /** Watch the message event. */
-    this.channel.bind("message", (data: Message): void => {
+    this.channel.bind('message', (data: Message): void => {
       /** Update messages. */
       this.addMessage(new Message(data));
     });

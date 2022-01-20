@@ -1,7 +1,6 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ApiService } from '@app/shared/services/api.service';
 import { HttpInterceptorService } from '@app/shared/services/http-interceptor.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
@@ -46,7 +45,6 @@ export function markedOptionsFactory(): MarkedOptions {
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
-    ApiService,
   ],
   bootstrap: [
     AppComponent,

@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Message } from '@app/shared/classes/message';
 import { File as AppFile } from '@app/shared/interfaces/file';

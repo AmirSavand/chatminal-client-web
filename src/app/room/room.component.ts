@@ -95,7 +95,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       let clipboardData: DataTransfer = event.clipboardData || (window as any).clipboardData;
       if (!this.room.members) {
         this.room.messages.push(
-          Message.chatminal(`Failed to upload files from clipboard. Must be connected to the room.`, true),
+          Message.chatminal('Failed to upload files from clipboard. Must be connected to the room.', true),
         );
         return;
       }
